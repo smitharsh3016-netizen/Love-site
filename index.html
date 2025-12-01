@@ -69,36 +69,23 @@
     color: #b0004e;
   }
 
-  /* Floating hearts */
-  .heart {
-    width: 15px;
-    height: 15px;
-    background: red;
+  /* Falling hearts */
+  .fallingHeart {
     position: absolute;
-    transform: rotate(-45deg);
-    animation: floatUp 5s linear infinite;
+    top: -50px;
+    font-size: 1.2rem;
+    color: #ff004c;
+    text-shadow: 0 0 10px rgba(255, 0, 90, 0.6);
+    animation: fallDown linear infinite;
     opacity: 0.8;
   }
 
-  .heart:before, .heart:after {
-    content: "";
-    width: 15px;
-    height: 15px;
-    background: red;
-    border-radius: 50%;
-    position: absolute;
+  @keyframes fallDown {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
   }
 
-  .heart:before { top: -8px; left: 0; }
-  .heart:after { top: 0; left: 8px; }
-
-  @keyframes floatUp {
-    0% { transform: translateY(0) rotate(-45deg); opacity: 0; }
-    20% { opacity: 1; }
-    100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
-  }
-
-  /* Love Question Box */
   #loveBox {
     display: none;
     margin-top: 20px;
@@ -120,13 +107,13 @@
 
 <body>
 
+<!-- 🎶 Background Music -->
 <audio id="bgMusic" src="music.mp3" loop></audio>
 
 <h1>Alvin ❤️ Aditi</h1>
 
 <p id="question"></p>
 <img id="sticker" src="" alt="Sticker">
-
 <button id="nextBtn">Next</button>
 
 <div id="loveBox">
@@ -147,7 +134,6 @@ let questions = [
 ];
 
 let images = ["1.png", "2.png", "3.png", "4.png", "5.png"];
-
 let i = 0;
 
 const q = document.getElementById("question");
@@ -155,10 +141,9 @@ const img = document.getElementById("sticker");
 const nextBtn = document.getElementById("nextBtn");
 const loveBox = document.getElementById("loveBox");
 const finalMsg = document.getElementById("finalMessage");
-
 const music = document.getElementById("bgMusic");
 
-/* Start music when screen is tapped */
+// 🔊 Start music when screen tapped
 document.body.addEventListener("click", () => {
   music.play().catch(()=>{});
 }, { once: true });
@@ -180,9 +165,7 @@ nextBtn.onclick = () => {
     img.src = images[i];
     img.style.display = "block";
     i++;
-
     if (i === questions.length) nextBtn.textContent = "Continue";
-
   } else {
     q.style.display = "none";
     img.style.display = "none";
@@ -191,7 +174,7 @@ nextBtn.onclick = () => {
   }
 };
 
-// NO BUTTON RUNS AWAY 😭🤣
+// 💞 NO button runs away
 document.getElementById("noBtn").onmouseover = () => {
   let x = Math.random() * 80 + 10;
   let y = Math.random() * 60 + 20;
@@ -199,21 +182,28 @@ document.getElementById("noBtn").onmouseover = () => {
   document.getElementById("noBtn").style.top = y + "vh";
 };
 
-// YES BUTTON FINAL MESSAGE
+// ❤️ YES button final message
 document.getElementById("yesBtn").onclick = () => {
   loveBox.style.display = "none";
   finalMsg.style.display = "block";
 };
 
-// Floating hearts
-for (let h = 0; h < 30; h++) {
+// 💗 Falling heart rain
+const names = ["Aditi", "Alvin", "A + A", "❤️", "💖"];
+function createHeart() {
   let heart = document.createElement("div");
-  heart.classList.add("heart");
+  heart.classList.add("fallingHeart");
+  heart.textContent = names[Math.floor(Math.random() * names.length)];
   heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = 4 + Math.random() * 4 + "s";
-  heart.style.animationDelay = Math.random() * 3 + "s";
+  heart.style.fontSize = (1 + Math.random() * 1.5) + "rem";
+  heart.style.animationDuration = (4 + Math.random() * 5) + "s";
   document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 9000);
 }
+setInterval(createHeart, 400);
 </script>
 
 </body>
