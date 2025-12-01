@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Alvin ❤️ Aditi</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Arial,Helvetica,sans-serif;
+      min-height:100vh;display:flex;flex-direction:column;
+      justify-content:center;align-items:center;
+      background:linear-gradient(135deg,#ffd1dc,#fff7f9);padding:20px}
+    h1{font-size:1.6rem;margin-bottom:8px}
+    #question{font-size:1.1rem;margin:10px 0;min-height:44px}
+    #pic{width:220px;height:220px;object-fit:contain;margin:10px auto}
+    button{margin-top:12px;padding:10px 22px;border-radius:24px;border:0;background:#ff4d6d;color:#fff}
+  </style>
+</head>
+<body>
+  <h1>Alvin ❤️ Aditi</h1>
+  <p id="question"></p>
+  <img id="pic" src="" alt="sticker">
+  <button id="nextBtn">Next</button>
+
+<script>
+  const messages = [
+    "Hey Aditi, beautiful soul 🌸",
+    "Do you like cute surprises? 🎁",
+    "Would you enjoy endless hugs with Alvin? 🧸",
+    "Dreaming of magical moments together? ✨",
+    "Alvin loves you so much, Aditi ❤️"
+  ];
+  // image filenames you will upload
+  const pics = ["1.png","2.png","3.png","4.png","5.png","6.png"];
+
+  let step = 0;
+  const q = document.getElementById('question');
+  const pic = document.getElementById('pic');
+  const btn = document.getElementById('nextBtn');
+
+  function showStep(){
+    if(step < messages.length){
+      q.textContent = messages[step];
+      pic.src = pics[step];
+      step++;
+      if(step === messages.length) btn.textContent = "Finish";
+    } else {
+      q.textContent = "Aditi — Alvin loves you forever 💖";
+      pic.style.display = "none";
+      btn.style.display = "none";
+    }
+  }
+
+  btn.addEventListener('click', showStep);
+  // show first automatically
+  showStep();
+</script>
+</body>
+</html>
