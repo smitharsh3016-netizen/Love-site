@@ -1,59 +1,220 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Alvin ❤️ Aditi</title>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Arial,Helvetica,sans-serif;
-      min-height:100vh;display:flex;flex-direction:column;
-      justify-content:center;align-items:center;
-      background:linear-gradient(135deg,#ffd1dc,#fff7f9);padding:20px}
-    h1{font-size:1.6rem;margin-bottom:8px}
-    #question{font-size:1.1rem;margin:10px 0;min-height:44px}
-    #pic{width:220px;height:220px;object-fit:contain;margin:10px auto}
-    button{margin-top:12px;padding:10px 22px;border-radius:24px;border:0;background:#ff4d6d;color:#fff}
-  </style>
-</head>
-<body>
-  <h1>Alvin ❤️ Aditi</h1>
-  <p id="question"></p>
-  <img id="pic" src="" alt="sticker">
-  <button id="nextBtn">Next</button>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alvin ❤️ Aditi</title>
 
-<script>
-  const messages = [
-    "Hey Aditi, beautiful soul 🌸",
-    "Do you like cute surprises? 🎁",
-    "Would you enjoy endless hugs with Alvin? 🧸",
-    "Dreaming of magical moments together? ✨",
-    "Alvin loves you so much, Aditi ❤️"
-  ];
-  // image filenames you will upload
-  const pics = ["1.png","2.png","3.png","4.png","5.png","6.png"];
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  let step = 0;
-  const q = document.getElementById('question');
-  const pic = document.getElementById('pic');
-  const btn = document.getElementById('nextBtn');
-
-  function showStep(){
-    if(step < messages.length){
-      q.textContent = messages[step];
-      pic.src = pics[step];
-      step++;
-      if(step === messages.length) btn.textContent = "Finish";
-    } else {
-      q.textContent = "Aditi — Alvin loves you forever 💖";
-      pic.style.display = "none";
-      btn.style.display = "none";
-    }
+  body {
+    background: linear-gradient(135deg, #ffbad2, #ffd6e7);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    position: relative;
   }
 
-  btn.addEventListener('click', showStep);
-  // show first automatically
-  showStep();
+  h1 {
+    font-size: 2rem;
+    margin-top: 10px;
+    color: black;
+    text-shadow: 1px 1px 3px pink;
+  }
+
+  #question {
+    margin-top: 15px;
+    font-size: 1.4rem;
+    min-height: 50px;
+    text-align: center;
+  }
+
+  #sticker {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    margin-top: 15px;
+    display: none;
+    animation: popUp 0.6s forwards;
+  }
+
+  @keyframes popUp {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  button {
+    padding: 10px 24px;
+    margin-top: 15px;
+    background: #ff4d6d;
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgba(255,0,80,0.3);
+  }
+
+  #finalMessage {
+    display: none;
+    font-size: 1.8rem;
+    margin-top: 20px;
+    text-align: center;
+    color: #b0004e;
+  }
+
+  /* Floating hearts */
+  .heart {
+    width: 15px;
+    height: 15px;
+    background: red;
+    position: absolute;
+    transform: rotate(-45deg);
+    animation: floatUp 5s linear infinite;
+    opacity: 0.8;
+  }
+
+  .heart:before, .heart:after {
+    content: "";
+    width: 15px;
+    height: 15px;
+    background: red;
+    border-radius: 50%;
+    position: absolute;
+  }
+
+  .heart:before { top: -8px; left: 0; }
+  .heart:after { top: 0; left: 8px; }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(-45deg); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
+  }
+
+  /* Love Question Box */
+  #loveBox {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  #yesBtn, #noBtn {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+  }
+
+  #yesBtn { background: #28d88e; color: white; }
+  #noBtn { background: #ff4d4d; color: white; position: absolute; }
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" src="music.mp3" loop></audio>
+
+<h1>Alvin ❤️ Aditi</h1>
+
+<p id="question"></p>
+<img id="sticker" src="" alt="Sticker">
+
+<button id="nextBtn">Next</button>
+
+<div id="loveBox">
+  <p style="font-size:1.4rem;">Do you love me Aditi? 🥺❤️</p>
+  <button id="yesBtn">Yes 😳❤️</button>
+  <button id="noBtn">No 😭</button>
+</div>
+
+<p id="finalMessage">Aditi, you are the reason Alvin’s heart smiles. ❤️</p>
+
+<script>
+let questions = [
+  "Hey Aditi 👀",
+  "I made something special for you 🩷",
+  "Do you like surprises? 🎁",
+  "Someone really really likes you 😳",
+  "Ready for the final part? 🥺💗"
+];
+
+let images = ["1.png", "2.png", "3.png", "4.png", "5.png"];
+
+let i = 0;
+
+const q = document.getElementById("question");
+const img = document.getElementById("sticker");
+const nextBtn = document.getElementById("nextBtn");
+const loveBox = document.getElementById("loveBox");
+const finalMsg = document.getElementById("finalMessage");
+
+const music = document.getElementById("bgMusic");
+
+/* Start music when screen is tapped */
+document.body.addEventListener("click", () => {
+  music.play().catch(()=>{});
+}, { once: true });
+
+function typeText(text) {
+  q.textContent = "";
+  let idx = 0;
+  let speed = 40;
+  let typing = setInterval(() => {
+    q.textContent += text[idx];
+    idx++;
+    if (idx >= text.length) clearInterval(typing);
+  }, speed);
+}
+
+nextBtn.onclick = () => {
+  if (i < questions.length) {
+    typeText(questions[i]);
+    img.src = images[i];
+    img.style.display = "block";
+    i++;
+
+    if (i === questions.length) nextBtn.textContent = "Continue";
+
+  } else {
+    q.style.display = "none";
+    img.style.display = "none";
+    nextBtn.style.display = "none";
+    loveBox.style.display = "block";
+  }
+};
+
+// NO BUTTON RUNS AWAY 😭🤣
+document.getElementById("noBtn").onmouseover = () => {
+  let x = Math.random() * 80 + 10;
+  let y = Math.random() * 60 + 20;
+  document.getElementById("noBtn").style.left = x + "vw";
+  document.getElementById("noBtn").style.top = y + "vh";
+};
+
+// YES BUTTON FINAL MESSAGE
+document.getElementById("yesBtn").onclick = () => {
+  loveBox.style.display = "none";
+  finalMsg.style.display = "block";
+};
+
+// Floating hearts
+for (let h = 0; h < 30; h++) {
+  let heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = 4 + Math.random() * 4 + "s";
+  heart.style.animationDelay = Math.random() * 3 + "s";
+  document.body.appendChild(heart);
+}
 </script>
+
 </body>
 </html>
