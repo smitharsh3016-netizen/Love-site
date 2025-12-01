@@ -1,131 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Alvin ❤️ Aditi</title>
 
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial';}
 
   body {
-    background: linear-gradient(135deg, #ffbad2, #ffd6e7);
-    font-family: Arial, sans-serif;
-    min-height: 100vh;
     overflow: hidden;
+    background: linear-gradient(135deg, #000000, #4d001f, #ffb6d5);
+    background-size: 300% 300%;
+    animation: bgMove 12s ease infinite;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-    position: relative;
+    padding-top: 25px;
+  }
+
+  @keyframes bgMove {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
   }
 
   h1 {
     font-size: 2rem;
-    margin-top: 10px;
-    color: black;
-    text-shadow: 1px 1px 3px pink;
+    color: #ff8fb8;
+    text-shadow: 0 0 8px #ff5fa2;
+    animation: fadeIn 2s ease forwards;
   }
 
   #question {
     margin-top: 15px;
     font-size: 1.4rem;
-    min-height: 50px;
+    color: #ffd0e6;
+    text-shadow: 0 0 6px #ff8fb8;
     text-align: center;
+    min-height: 50px;
   }
 
   #sticker {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
+    width: 170px;
+    height: 170px;
     margin-top: 15px;
+    object-fit: contain;
     display: none;
-    animation: popUp 0.6s forwards;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: stickerIn 0.7s forwards;
   }
 
-  @keyframes popUp {
-    from { transform: scale(0.5); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+  @keyframes stickerIn {
+    to {opacity: 1; transform: translateY(0);}
   }
 
   button {
-    padding: 10px 24px;
     margin-top: 15px;
-    background: #ff4d6d;
+    padding: 10px 25px;
+    background: #ff4d78;
     border: none;
     border-radius: 25px;
     color: white;
     font-size: 1rem;
+    box-shadow: 0 0 12px rgba(255, 90, 150, 0.7);
     cursor: pointer;
-    box-shadow: 2px 2px 10px rgba(255,0,80,0.3);
+  }
+
+  /* Glassmorphism Love Box */
+  #loveBox {
+    display: none;
+    margin-top: 20px;
+    background: rgba(255, 180, 210, 0.15);
+    backdrop-filter: blur(12px);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(255, 0, 90, 0.3);
+    text-align: center;
+    animation: fadeIn 1.5s ease forwards;
   }
 
   #finalMessage {
     display: none;
-    font-size: 1.8rem;
-    margin-top: 20px;
+    font-size: 2rem;
+    color: #ffb6d5;
+    text-shadow: 0 0 10px #ff3e76;
     text-align: center;
-    color: #b0004e;
+    margin-top: 25px;
+    animation: finalGlow 3s ease infinite alternate;
   }
 
-  /* Falling hearts */
-  .fallingHeart {
+  @keyframes finalGlow {
+    from { text-shadow: 0 0 8px #ff5ea5; }
+    to   { text-shadow: 0 0 18px #ff85cd; }
+  }
+
+  /* FLOATING PARTICLES + HEARTS */
+  .particle {
     position: absolute;
-    top: -50px;
-    font-size: 1.2rem;
-    color: #ff004c;
-    text-shadow: 0 0 10px rgba(255, 0, 90, 0.6);
-    animation: fallDown linear infinite;
-    opacity: 0.8;
+    border-radius: 50%;
+    background: rgba(255, 180, 210, 0.8);
+    filter: blur(3px);
+    animation: drift linear infinite;
   }
 
-  @keyframes fallDown {
-    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-    10% { opacity: 1; }
-    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  .heartBokeh {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: rgba(255, 120, 160, 0.4);
+    transform: rotate(45deg);
+    border-radius: 2px;
+    filter: blur(2px);
+    animation: drift linear infinite;
   }
 
-  #loveBox {
-    display: none;
-    margin-top: 20px;
-    text-align: center;
+  .heartBokeh::before,
+  .heartBokeh::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: rgba(255, 120, 160, 0.4);
+    border-radius: 50%;
   }
 
-  #yesBtn, #noBtn {
-    padding: 10px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 20px;
-    font-size: 1rem;
+  .heartBokeh::before { top: -9px; left: 0; }
+  .heartBokeh::after { top: 0; left: -9px; }
+
+  @keyframes drift {
+    0% {transform: translateY(0) scale(1);}
+    100% {transform: translateY(110vh) scale(1.4);}
   }
 
-  #yesBtn { background: #28d88e; color: white; }
-  #noBtn { background: #ff4d4d; color: white; position: absolute; }
+  audio { display: none; }
+ /* --- BOKEH BACKGROUND LIGHTS --- */
+.bokeh {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255,200,220,0.9), rgba(255,150,180,0.2));
+  border-radius: 50%;
+  filter: blur(25px);
+  opacity: 0;
+  animation: floatBokeh 12s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes floatBokeh {
+  0% { transform: scale(0.6) translateY(0); opacity: 0.1; }
+  40% { opacity: 0.5; }
+  100% { transform: scale(1.3) translateY(-80vh); opacity: 0; }
+}
 </style>
 </head>
 
 <body>
 
-<!-- 🎶 Background Music -->
 <audio id="bgMusic" src="music.mp3" loop></audio>
 
 <h1>Alvin ❤️ Aditi</h1>
 
 <p id="question"></p>
-<img id="sticker" src="" alt="Sticker">
+
+<img id="sticker" src="" alt="Sticker" />
+
 <button id="nextBtn">Next</button>
 
 <div id="loveBox">
-  <p style="font-size:1.4rem;">Do you love me Aditi? 🥺❤️</p>
-  <button id="yesBtn">Yes 😳❤️</button>
-  <button id="noBtn">No 😭</button>
+  <p style="font-size:1.5rem; color:white;">Do you love me Aditi? 🥺❤️</p>
+  <button id="yesBtn" style="background:#28d88e;">Yes 😳❤️</button>
+  <button id="noBtn" style="background:#ff4d4d; position:relative;">No 😭</button>
 </div>
 
 <p id="finalMessage">Aditi, you are the reason Alvin’s heart smiles. ❤️</p>
-
 <script>
-let questions = [
+/* ------------------ TYPEWRITER EFFECT ------------------ */
+function typeText(element, text, speed = 40) {
+  let i = 0;
+  element.textContent = "";
+  const typing = setInterval(() => {
+    element.textContent += text[i];
+    i++;
+    if (i >= text.length) clearInterval(typing);
+  }, speed);
+}
+
+/* ------------------ BACKGROUND PARTICLES + HEARTS ------------------ */
+function createParticle() {
+  const p = document.createElement("div");
+  const isHeart = Math.random() > 0.6; // 40% hearts, 60% dots
+  
+  if (isHeart) {
+    p.classList.add("heartBokeh");
+  } else {
+    p.classList.add("particle");
+    const size = Math.random() * 4 + 2;
+    p.style.width = size + "px";
+    p.style.height = size + "px";
+  }
+
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.top = "-10px";
+
+  p.style.animationDuration = 6 + Math.random() * 6 + "s";
+  p.style.opacity = Math.random() * 0.8 + 0.2;
+
+  document.body.appendChild(p);
+
+  setTimeout(() => p.remove(), 14000);
+}
+
+setInterval(createParticle, 250);
+
+/* ------------------ MAIN STORY LOGIC ------------------ */
+const questions = [
   "Hey Aditi 👀",
   "I made something special for you 🩷",
   "Do you like surprises? 🎁",
@@ -133,39 +223,52 @@ let questions = [
   "Ready for the final part? 🥺💗"
 ];
 
-let images = ["1.png", "2.png", "3.png", "4.png", "5.png"];
-let i = 0;
+const images = ["1.png","2.png","3.png","4.png","5.png"];
 
+let index = 0;
 const q = document.getElementById("question");
 const img = document.getElementById("sticker");
 const nextBtn = document.getElementById("nextBtn");
 const loveBox = document.getElementById("loveBox");
 const finalMsg = document.getElementById("finalMessage");
-const music = document.getElementById("bgMusic");
 
-// 🔊 Start music when screen tapped
+/* ------------------ MUSIC FADE-IN ON FIRST TAP ------------------ */
+const music = document.getElementById("bgMusic");
+let musicStarted = false;
+
 document.body.addEventListener("click", () => {
-  music.play().catch(()=>{});
+  if (!musicStarted) {
+    music.volume = 0;
+    music.play().catch(()=>{});
+    let vol = 0;
+    const fade = setInterval(() => {
+      if (vol < 0.4) {
+        vol += 0.01;
+        music.volume = vol;
+      } else clearInterval(fade);
+    }, 150);
+    musicStarted = true;
+  }
 }, { once: true });
 
-function typeText(text) {
-  q.textContent = "";
-  let idx = 0;
-  let speed = 40;
-  let typing = setInterval(() => {
-    q.textContent += text[idx];
-    idx++;
-    if (idx >= text.length) clearInterval(typing);
-  }, speed);
-}
-
+/* ------------------ NEXT BUTTON ------------------ */
 nextBtn.onclick = () => {
-  if (i < questions.length) {
-    typeText(questions[i]);
-    img.src = images[i];
-    img.style.display = "block";
-    i++;
-    if (i === questions.length) nextBtn.textContent = "Continue";
+  if (index < questions.length) {
+    typeText(q, questions[index]);
+    img.style.display = "none";
+    
+    setTimeout(() => {
+      img.src = images[index];
+      img.style.display = "block";
+      img.style.animation = "stickerIn 0.7s forwards";
+    }, 300);
+
+    index++;
+
+    if (index === questions.length) {
+      nextBtn.textContent = "Continue";
+    }
+
   } else {
     q.style.display = "none";
     img.style.display = "none";
@@ -174,37 +277,98 @@ nextBtn.onclick = () => {
   }
 };
 
-// 💞 NO button runs away
-document.getElementById("noBtn").onmouseover = () => {
-  let x = Math.random() * 80 + 10;
-  let y = Math.random() * 60 + 20;
-  document.getElementById("noBtn").style.left = x + "vw";
-  document.getElementById("noBtn").style.top = y + "vh";
+/* ------------------ NO BUTTON RUN AWAY ------------------ */
+const noBtn = document.getElementById("noBtn");
+noBtn.onmouseover = () => {
+  noBtn.style.position = "absolute";
+  noBtn.style.left = Math.random() * 80 + "vw";
+  noBtn.style.top = Math.random() * 60 + "vh";
 };
 
-// ❤️ YES button final message
+/* ------------------ YES BUTTON FINAL MESSAGE ------------------ */
 document.getElementById("yesBtn").onclick = () => {
   loveBox.style.display = "none";
   finalMsg.style.display = "block";
 };
+ </script>
+ </body>
+</html>
+// FINAL YES/NO LOGIC + MUSIC FADE + FINAL REVEAL
 
-// 💗 Falling heart rain
-const names = ["Aditi", "Alvin", "A + A", "❤️", "💖"];
+// NO BUTTON runs away 😂😭
+const noBtn = document.getElementById("noBtn");
+noBtn.onmouseover = () => {
+  let x = Math.random() * 75 + 10;
+  let y = Math.random() * 65 + 10;
+  noBtn.style.left = x + "vw";
+  noBtn.style.top = y + "vh";
+};
+
+// YES BUTTON → Show final message
+const yesBtn = document.getElementById("yesBtn");
+yesBtn.onclick = () => {
+  loveBox.style.display = "none";
+  finalMsg.style.display = "block";
+
+  fadeInFinalMessage();
+};
+
+// Soft fade-in animation for final message
+function fadeInFinalMessage() {
+  finalMsg.style.opacity = 0;
+  let opacity = 0;
+
+  let fade = setInterval(() => {
+    opacity += 0.02;
+    finalMsg.style.opacity = opacity;
+
+    if (opacity >= 1) clearInterval(fade);
+  }, 30);
+}
+
+// MUSIC SMOOTH FADE-IN
+function fadeInMusic() {
+  let volume = 0;
+  music.volume = 0;
+  music.play().catch(()=>{});
+
+  let fade = setInterval(() => {
+    volume += 0.02;
+    music.volume = volume;
+
+    if (volume >= 0.5) clearInterval(fade);
+  }, 200);
+}
+
+// START MUSIC ON FIRST TAP
+document.body.addEventListener("click", fadeInMusic, { once: true });
+
+// CREATE FLOATING HEART PARTICLES
 function createHeart() {
   let heart = document.createElement("div");
-  heart.classList.add("fallingHeart");
-  heart.textContent = names[Math.floor(Math.random() * names.length)];
+  heart.classList.add("heart");
+
   heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (1 + Math.random() * 1.5) + "rem";
-  heart.style.animationDuration = (4 + Math.random() * 5) + "s";
+  heart.style.animationDuration = 4 + Math.random() * 5 + "s";
+
   document.body.appendChild(heart);
 
-  setTimeout(() => {
-    heart.remove();
-  }, 9000);
+  setTimeout(() => heart.remove(), 9000);
 }
-setInterval(createHeart, 400);
-</script>
 
-</body>
-</html>
+setInterval(createHeart, 400);
+// --- CREATE FLOATING BOKEH LIGHTS ---
+function createBokeh() {
+  let b = document.createElement("div");
+  b.classList.add("bokeh");
+
+  b.style.left = Math.random() * 100 + "vw";
+  b.style.top = "100vh";
+  b.style.animationDuration = 10 + Math.random() * 10 + "s";
+
+  document.body.appendChild(b);
+
+  setTimeout(() => b.remove(), 15000);
+}
+
+setInterval(createBokeh, 800);
